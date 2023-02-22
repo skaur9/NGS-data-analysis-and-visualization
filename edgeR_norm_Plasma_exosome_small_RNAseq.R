@@ -339,9 +339,8 @@ dev.off()
 ##########################################################
 
 
-table2=read.table("
+table2=read.table("casevscontrol_DEResults.txt", h=T)
 library(calibrate)
-table1=read.table("logUMI_filtered_miRNAs.txt", h=T)
 
 #####Choose column 6 for adj p value
 
@@ -373,7 +372,7 @@ volcano_plot<-function(logFC, pval) {
           )
      
      ##For labels
-  textxy((logFC),(-log10(pvals)), labs=names, cex = 0.6, m = c(0, 0))
+  #textxy((logFC),(-log10(pvals)), labs=names, cex = 0.6, m = c(0, 0))
 
 
      abline(h=-log10(0.05),col="green",lty="44")# horizontal line at P=0.05
@@ -401,10 +400,6 @@ volcano_plot<-function(logFC, pval) {
 
 volcano_plot(logFC, pvals)
 
-
-pdf("volcano_plot_names.pdf")
-volcano_plot(logFC, pvals)
-dev.off()
 
 pdf("volcano_plot.pdf")
 volcano_plot(logFC, pvals)
