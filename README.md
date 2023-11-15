@@ -1,3 +1,3 @@
-# NGS-data-analysis-and-visualization
+# R scipts for NGS-data-analysis-and-visualization
 
-This repository contains R scripts to analyze RNA-seq and other NGS datasets used in my published studies. 
+This repository contains R scripts to analyze total RNA-seq and small RNA-seq datasets used in my published studies. 
