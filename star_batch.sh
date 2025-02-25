@@ -1,4 +1,4 @@
-## Bach script for alignment using STAR
+## Bach script for parallel processing and alignment using STAR 
 ## Author: Simranjeet Kaur
 
 #!/bin/bash
