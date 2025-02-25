@@ -1,4 +1,4 @@
-## Bash script for creating read counts from sorted bam files using htseqcount using parallel processing
+## Bash script for running htseqcount using parallel processing
 ## Author: Simranjeet Kaur
 
 #!/bin/bash
