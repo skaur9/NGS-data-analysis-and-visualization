@@ -1,4 +1,4 @@
-## Bash script for parallel processing bam files
+## Bash script for sorting bam files using parallel processing 
 ## Author: Simranjeet Kaur
 
 #!/bin/bash
