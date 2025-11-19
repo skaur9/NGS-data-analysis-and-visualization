@@ -1,11 +1,4 @@
----
-title: "Small RNA-seq analysis as published in Frørup et al, 2021 Frontiers Immunol, PMID: 34691048"
-author: "Simranjeet Kaur"
-format: html
-editor: visual
----
 
-```{r setup}
 library(edgeR)
 library(locfit)
 library(statmod)
@@ -14,9 +7,8 @@ library(factoextra)
 library(gplots)
 library(RColorBrewer)
 library(calibrate)
-```
+
 ## Read the raw read counts
-```{r}
 all_samples<-read.table("UMI_reads.txt", h=T,check.names=FALSE, stringsAsFactors=FALSE, sep="\t")
 head(all_samples)
 condition <- c(rep("control",26), rep("case",26))
@@ -24,10 +16,8 @@ y<-DGEList(counts=all_samples[,2:53],genes=all_samples$miRNA, group=condition)
 dim(y)
 #[1] 2556   52
 rownames(y$counts) <- rownames(y$genes) <- y$genes$genes
-```
 
 ## Before QC Plots
-```{r}
 #Set up treatment colours
 colorCodes <- c(rep("blue",26), rep("red",26))
 #Read counts per sample and counts per gene
@@ -48,10 +38,9 @@ legend("topleft", legend=c("T1D", "Control"), bty="n", cex=0.6,col=c(2,4), pch=1
 dev.off()
 
 #In the plot, dimension 1 separates the treated from the normal samples, while dimension 2 roughly corresponds to patient number. This confirms the paired nature of the samples.
-```
+
 
 ## Filter lowly expressed genes
-```{r}
 selr <- rowSums(y$counts>10) >=20
 summary(selr)
 #   Mode   FALSE    TRUE 
@@ -125,10 +114,8 @@ logUMI=log2(y$counts+0.2)
 logcpm <- cpm(y, prior.count=2, log=TRUE)
 write.table(logcpm, file="logCPM_filtered_miRNAs.txt", sep="\t", quote=FALSE)
 write.table(logUMI, file="logUMI_filtered_miRNAs.txt", sep="\t", quote=FALSE)
-```
 
 ## Plots After filtering low expressed miRNAs
-```{r}
 #Set up treatment colours
 colorCodes <- c(rep("blue",26), rep("red",26))
 
@@ -161,11 +148,9 @@ cond=as.factor(condition)
 res.pca <- prcomp(df, scale = TRUE)
 fviz_pca_ind(res.pca, habillage = cond, addEllipses = TRUE, ellipse.level = 0.68) + theme_minimal()
 dev.off()
-```
 
 
 ## DE analysis using GLM aproach
-```{r}
 design=model.matrix(~0+group, data= y$samples)  ## group is from y$samples$group
 # +0 in the model is an instruction not to include an intercept column and instead to include a column for each group
 
@@ -255,11 +240,9 @@ resSig = subset(resOrdered, FDR<0.05)
 #Print results to file
 write.table(resOrdered, file='casevscontrol_DEResults.txt',sep='\t',quote=FALSE)
 write.table(resSig, file='casevscontrol_DE_pVal0.05.txt',sep='\t',quote=FALSE)
-```
 
 
 ## Use a cutoff of log2-fold-change of 1 for DE plots
-```{r}
 is.de <- decideTestsDGE(lrt, p.value=0.05, lfc=1)
 summary(is.de)
 
@@ -280,10 +263,9 @@ pdf("DE_genes_logFC-1_scale.pdf")
 plotSmear(lrt, de.tags=rownames(lrt) [is.de!=0], xlab="Average logCPM", ylab="logFC", cex=0.6,ylim=c(-5,5))
 abline(h = c(-1, 0, 1), col = c("dodgerblue", "red", "dodgerblue"), lty=2)
 dev.off()
-```
+
 
 ## Heatmaps and Volcano Plots
-```{r}
 table1=read.table("logUMI_filtered_miRNAs.txt", h=T)
 hmcol<- colorRampPalette(brewer.pal(10, "RdYlGn"))(256)
 
@@ -357,5 +339,4 @@ volcano_plot(logFC, pvals)
 pdf("volcano_plot.pdf")
 volcano_plot(logFC, pvals)
 dev.off()
-```
 
